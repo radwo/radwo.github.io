@@ -1,0 +1,3 @@
+name: radwo
+markdown: redcarpet
+highlighter: 'rouge'
