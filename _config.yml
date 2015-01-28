@@ -1,3 +1,5 @@
 name: radwo
 markdown: redcarpet
-highlighter: 'rouge'
+highlighter: 'pygments'
+safe: true
+lsi: false
