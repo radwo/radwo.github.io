@@ -11,7 +11,7 @@ Thanks to vault all data, even sensitive one such as private keys and passwords 
 
 Tracking changes in raw vault files can be a pain, though. Files are encrypted so even the slightest change will generate big, meaningless diff.
 
-```
+{% highlight bash %}
 $ANSIBLE_VAULT;1.1;AES256
  -34343234386466633034356430356166383261633938396537323964326631626463376238323365
  -3739613134633331303362633266616138663765626134620a373830396434313230336161343766
@@ -24,24 +24,23 @@ $ANSIBLE_VAULT;1.1;AES256
  +6532646662366632350a353638646161393663353037363366643638313138316533663261333864
  +36356365393166636537653438616165616635323065356361653963326639313565626361323866
  +39353362353065353962383035663530636539656233663761613832376566363239303433336530
-
-```
+{% endhighlight %}
 
 It is even worse when someone edits that file while you were on a branch. Git will see two entirely different contents and always marks it as a conflict. To resolve it and determine what exactly has changed you need to decrypt both files and apply the patch manually. It can be fun for the first time but in a long run it is annoying.
 
 Fortunately, you can automate this process and tell git to decrypt those files before diffing them. First of all you should specify which files you are referring to. Use [gitattributes](https://book.git-scm.com/docs/gitattributes) for that and mark YAML files in `devops/vars` directory.
 
-```
+{% highlight bash %}
 devops/vars/**/*.yml diff=ansible-vault
-```
+{% endhighlight %}
 
 `ansible-vault` is name for `diff driver`. Next in [gitconfig](https://git-scm.com/docs/git-config) configure how this driver should behave.
 
-```
+{% highlight bash %}
 [diff "ansible-vault"]
   textconv = ansible-vault view
   cachetextconv = false
-```
+{% endhighlight %}
 
 In `textconv` paste command that the diff driver should call to generate the human-readable file. `cachetextconv` is set to `false` because you don’t want git to cache your secrets.
 
@@ -53,21 +52,21 @@ Only oneway conversion can be set with `diff driver`. So for merge you need to u
 
 Firstly, mark files which should use this driver.
 
-```
+{% highlight bash %}
 devops/vars/**/*.yml diff=ansible-vault merge=ansible-vault
-```
+{% endhighlight %}
 
 Change it in the same place as for `diff driver` and give it same name. Now let’s configure this new driver.
 
-```
+{% highlight bash %}
 [merge "ansible-vault"]
   name = ansible-vault merge driver
   driver = /usr/local/bin/ansible-vault-merge -- %O %A %B %P
-```
+{% endhighlight %}
 
 In `driver` put path to command that implements new merge strategy. Here it is.
 
-```
+{% highlight bash %}
 #!/bin/sh
 
 BASE=$1
@@ -87,7 +86,7 @@ if ! git merge-file -L CURRENT -L BASE -L OTHER $CURRENT $BASE $OTHER; then
 else
   ansible-vault encrypt $CURRENT
 fi
-```
+{% endhighlight %}
 
 Standard `merge-file` mechanism is used, but it operates on encrypted files. If git encounters a conflict it will also be visible in the file.
 
