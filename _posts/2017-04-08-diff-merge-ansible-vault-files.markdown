@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Diff and merge ansible vault files
+title: Diff and merge of ansible-vault files
 ---
 
 [Ansible](https://www.ansible.com) is a great tool for all kinds of automations. Very simple and intuitive. We use it with  [playbooks](http://docs.ansible.com/ansible/playbooks.html) and [ansible-vault](http://docs.ansible.com/ansible/playbooks_vault.html) to generate and propagate configuration files across our servers, both on production and staging/development environments ([because config is a place to separate credentials between environments](http://www.schneems.com/2017/03/21/config-behavior-versus-credentials)).
