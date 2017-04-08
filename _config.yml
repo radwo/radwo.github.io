@@ -1,4 +1,6 @@
 name: radwo
+title: radwo - personal blog about ruby and stuff
+description: Radosław Woźniak's personal blog
 markdown: redcarpet
 highlighter: 'pygments'
 safe: true
