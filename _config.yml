@@ -2,7 +2,7 @@ name: radwo
 title: radwo - personal blog about ruby and stuff
 description: Radosław Woźniak's personal blog
 theme: jekyll-theme-cayman
-markdown: redcarpet
+markdown: kramdown
 highlighter: 'pygments'
 safe: true
 lsi: false
